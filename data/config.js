@@ -13,7 +13,6 @@ window.TREE_CONFIG={
  "heroArt": "church",
  "levels": {
   "viz": "Ступишино",
-  "ekb": "Уезд / губерния",
   "ru": "Россия",
   "world": "Мир"
  },
