@@ -10,7 +10,7 @@ window.TREE_CONFIG={
  "pageTitle": "Родословие Аникановых",
  "kicker": "Родословие · Одоевский уезд · Тульская губерния",
  "heading": "Род Аникановых",
- "heroArt": "church",
+ "heroArt": "village",
  "levels": {
   "viz": "Ступишино",
   "ru": "Россия",
