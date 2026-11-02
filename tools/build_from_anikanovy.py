@@ -154,3 +154,18 @@ upd = '.'.join(reversed(ИССЛЕДОВАНИЕ['обновлено'].split('-'
 open('data/config.js', 'w', encoding='utf-8').write(re.sub(r'"updated":\s*"[^"]*"', f'"updated": "{upd}"', cfg))
 print(f'персон {len(persons)} (скрыто {len(hidden)}), семей {len(families)}, источников {len(sources)}, мест {len(places)}, '
       f'разделов {len(studies)}')
+
+# --- Правило исследователя (02.11.2026): на сайте не упоминается М. А. Кудрявцев,
+# слово «заказчик» заменяется на «исследователь».
+import glob as _glob
+_REPL = [(r'\s*\(М\.\s*А\.\s*Кудрявцев\)', ''), (r'М\.\s*А\.\s*Кудрявцев[а-я]*', 'исследователь')]
+_ZK = {'заказчиком': 'исследователем', 'заказчика': 'исследователя', 'заказчику': 'исследователю',
+       'заказчике': 'исследователе', 'заказчик': 'исследователь'}
+for _f in _glob.glob('data/*.js') + _glob.glob('data/*.csv'):
+    _t = open(_f, encoding='utf-8-sig' if _f.endswith('.csv') else 'utf-8').read()
+    _o = _t
+    for a, b in _REPL: _t = re.sub(a, b, _t)
+    _t = re.sub(r'([Зз])аказчи(ком|ка|ку|ке|к)\b',
+                lambda m: ('И' if m.group(1) == 'З' else 'и') + _ZK['заказчи' + m.group(2)][1:], _t)
+    if _t != _o:
+        open(_f, 'w', encoding='utf-8-sig' if _f.endswith('.csv') else 'utf-8').write(_t)
