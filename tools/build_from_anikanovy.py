@@ -165,7 +165,9 @@ for _f in _glob.glob('data/*.js') + _glob.glob('data/*.csv'):
     _t = open(_f, encoding='utf-8-sig' if _f.endswith('.csv') else 'utf-8').read()
     _o = _t
     for a, b in _REPL: _t = re.sub(a, b, _t)
-    _t = re.sub(r'([Зз])аказчи(ком|ка|ку|ке|к)\b',
-                lambda m: ('И' if m.group(1) == 'З' else 'и') + _ZK['заказчи' + m.group(2)][1:], _t)
+    def _zk(m):
+        w = m.group(0); r = _ZK[w.lower()]
+        return r.upper() if w.isupper() else (r[0].upper() + r[1:] if w[0].isupper() else r)
+    _t = re.sub(r'заказчи(?:ком|ка|ку|ке|к)\b', _zk, _t, flags=re.I)
     if _t != _o:
         open(_f, 'w', encoding='utf-8-sig' if _f.endswith('.csv') else 'utf-8').write(_t)
